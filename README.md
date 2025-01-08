@@ -1,64 +1,89 @@
-### 1. **Giới thiệu**
-Đoạn code bao gồm hai phần chính:
-- Lớp `AlgorithmUtils` chứa phương thức `dijkstra` để tìm đường đi ngắn nhất từ một nút nguồn đến tất cả các nút khác trong đồ thị sử dụng thuật toán Dijkstra.
-- Lớp `AlgorithmUtilsTest` chứa các trường hợp kiểm thử để kiểm tra tính đúng đắn của thuật toán Dijkstra.
+## Giới thiệu
+
+Đoạn mã này bao gồm hai thành phần chính:
+- **Lớp `AlgorithmUtils`**: Chứa phương thức `dijkstra` để tìm đường đi ngắn nhất từ một nút nguồn đến tất cả các nút khác trong đồ thị sử dụng thuật toán Dijkstra.
+- **Lớp `AlgorithmUtilsTest`**: Chứa các trường hợp kiểm thử để đảm bảo tính đúng đắn của thuật toán Dijkstra.
 
 ---
 
-### 2. **Phần chi tiết**
+## Phạm vi kiểm thử
 
-#### **Lớp `AlgorithmUtils`**
-Lớp này định nghĩa phương thức `dijkstra` với các thông tin chi tiết như sau:
-- **Đầu vào**:
-  - `graph`: Đồ thị có trọng số dương, được biểu diễn dưới dạng `Map<Integer, List<int[]>>`. Mỗi phần tử ánh xạ từ một đỉnh (key) đến danh sách các cặp `[đỉnh_kề, trọng_số]`.
-  - `startNode`: Nút bắt đầu, từ đó cần tính khoảng cách ngắn nhất đến các nút khác.
-- **Đầu ra**:
-  - Một `Map<Integer, Integer>` ánh xạ mỗi nút đến khoảng cách ngắn nhất từ `startNode`.
+Hiện tại, mã kiểm thử bao gồm các trường hợp cơ bản:
+1. **Đồ thị đơn giản (SimpleGraph)**: Kiểm tra thuật toán với đồ thị có các nút kết nối với nhau qua các trọng số khác nhau.
+2. **Đồ thị rời rạc (DisconnectedGraph)**: Kiểm tra với đồ thị có các nút không kết nối.
+3. **Đồ thị chỉ có một nút (SingleNode)**: Kiểm tra với đồ thị chỉ chứa một nút duy nhất.
 
-- **Quy trình thực hiện**:
-  1. **Khởi tạo**:
-     - Tạo một bản đồ `distances` để lưu trữ khoảng cách ngắn nhất từ `startNode` đến tất cả các nút. Ban đầu, mọi khoảng cách được gán giá trị vô cực (`Integer.MAX_VALUE`), ngoại trừ nút bắt đầu có khoảng cách là `0`.
-     - Tạo một hàng đợi ưu tiên (`PriorityQueue`) để xử lý các đỉnh theo thứ tự khoảng cách ngắn nhất.
-  2. **Thuật toán Dijkstra**:
-     - Lặp qua các nút trong hàng đợi ưu tiên:
-       - Lấy nút hiện tại có khoảng cách nhỏ nhất từ hàng đợi.
-       - Nếu khoảng cách này không phải là nhỏ nhất (đã được cập nhật trước đó), bỏ qua.
-       - Duyệt qua các đỉnh kề của nút hiện tại và tính khoảng cách mới. Nếu tìm được đường đi ngắn hơn, cập nhật giá trị trong `distances` và thêm vào hàng đợi ưu tiên.
-  3. **Trả về**:
-     - Bản đồ `distances` chứa khoảng cách ngắn nhất từ `startNode` đến mỗi nút.
+### Bổ sung kiểm thử:
+Để đảm bảo tính toàn vẹn của chức năng, bạn nên mở rộng phạm vi kiểm thử với các tình huống sau:
+- **Đầu vào không hợp lệ**:
+  - Đồ thị rỗng hoặc null.
+  - Nút bắt đầu không tồn tại trong đồ thị.
+- **Tình huống biên**:
+  - Đồ thị có một cạnh hoặc không có cạnh.
+  - Đồ thị có chu trình.
+- **Đồ thị lớn**: Kiểm tra với đồ thị có số lượng nút và cạnh lớn để đánh giá hiệu suất.
 
 ---
 
-#### **Lớp `AlgorithmUtilsTest`**
-Lớp này sử dụng thư viện JUnit để kiểm tra phương thức `dijkstra` với các trường hợp khác nhau:
-1. **`testDijkstra_SimpleGraph`**:
-   - Kiểm tra thuật toán với một đồ thị đơn giản, trong đó các nút được kết nối với các trọng số khác nhau. So sánh kết quả thực tế với kết quả mong đợi.
-2. **`testDijkstra_DisconnectedGraph`**:
-   - Kiểm tra với một đồ thị rời rạc (có các nút không được kết nối). Kỳ vọng khoảng cách đến các nút không kết nối là `Integer.MAX_VALUE`.
-3. **`testDijkstra_SingleNode`**:
-   - Kiểm tra với một đồ thị chỉ có một nút. Kỳ vọng khoảng cách từ nút này đến chính nó là `0`.
+## Sử dụng các phương thức xác nhận (Assertions)
+
+Đảm bảo rằng các phương thức kiểm thử sử dụng đầy đủ các xác nhận của JUnit như:
+- `assertEquals` để so sánh giá trị mong đợi và giá trị thực tế.
+- `assertNotNull` để kiểm tra các đối tượng không null.
+- `assertThrows` để kiểm tra ngoại lệ được ném ra trong các trường hợp đầu vào không hợp lệ.
+
+Điều này giúp phát hiện các lỗi tiềm ẩn trong mã nguồn và tăng cường độ tin cậy của kiểm thử.
 
 ---
 
-### 3. **Ví dụ đồ thị và kết quả**
-- **Đồ thị mẫu (SimpleGraph)**:
-  ```
-  0 --(4)--> 1
-  |         /
-  (1)     (2)
-  |     /
-  2 --(5)--> 3
-  ```
-  - Đường đi ngắn nhất từ `0`:
-    - Đến `0`: 0
-    - Đến `1`: 3 (qua 0 → 2 → 1)
-    - Đến `2`: 1 (qua 0 → 2)
-    - Đến `3`: 4 (qua 0 → 2 → 1 → 3)
+## Cấu trúc và tổ chức mã kiểm thử
+
+Các phương thức kiểm thử cần được:
+1. **Đặt tên rõ ràng**: Ví dụ, sử dụng các tên như `testDijkstra_WithSimpleGraph`, `testDijkstra_WithNullGraph`, hoặc `testDijkstra_WithCycle` để phản ánh đúng chức năng được kiểm thử.
+2. **Phân nhóm hợp lý**: Nhóm các phương thức kiểm thử theo loại đồ thị (đồ thị đơn giản, rời rạc, chu trình, v.v.) hoặc loại đầu vào (hợp lệ, không hợp lệ).
+
+Điều này giúp người đọc dễ dàng hiểu và bảo trì mã kiểm thử.
 
 ---
 
-### 4. **Ý nghĩa**
-Thuật toán Dijkstra là một trong những thuật toán tìm đường đi ngắn nhất phổ biến nhất, thường được sử dụng trong các bài toán mạng, giao thông và định tuyến. Đoạn code này minh họa cách triển khai thuật toán một cách hiệu quả và dễ hiểu trong Java, đồng thời có kiểm thử đầy đủ để đảm bảo tính đúng đắn.
+## Tài liệu và chú thích
+
+Bổ sung các chú thích trong mã kiểm thử để giải thích mục đích của từng kiểm thử, đặc biệt đối với các trường hợp phức tạp. Ví dụ:
+```java
+// Kiểm tra thuật toán với đồ thị có chu trình
+@Test
+public void testDijkstra_WithCycle() {
+    // Định nghĩa đồ thị có chu trình
+    ...
+    // Thực hiện kiểm thử và xác nhận kết quả
+    ...
+}
+```
+Điều này giúp người khác dễ dàng theo dõi và bảo trì mã kiểm thử.
+
+---
+
+## Kiểm thử tích hợp
+
+Ngoài các kiểm thử đơn vị, hãy xem xét bổ sung các kiểm thử tích hợp:
+- Kiểm tra xem phương thức `dijkstra` hoạt động chính xác khi kết hợp với các thành phần khác trong hệ thống.
+- Ví dụ: Kiểm tra thuật toán Dijkstra trong một hệ thống định tuyến toàn diện.
+
+---
+
+## Sử dụng các công cụ phân tích mã
+
+Sử dụng các công cụ như **SonarQube** để:
+- Phân tích mã nguồn và phát hiện các vấn đề tiềm ẩn.
+- Đảm bảo rằng mã kiểm thử đạt được độ bao phủ cao.
+- Cải thiện chất lượng mã bằng cách phát hiện và sửa lỗi sớm.
+
+---
+
+## Kết luận
+
+Đoạn mã triển khai thuật toán Dijkstra và các kiểm thử tương ứng cung cấp nền tảng vững chắc để giải quyết các bài toán tìm đường đi ngắn nhất. Tuy nhiên, việc mở rộng phạm vi kiểm thử, tổ chức mã hợp lý, bổ sung tài liệu, và sử dụng các công cụ phân tích mã sẽ giúp tăng cường độ tin cậy và hiệu quả của mã nguồn.
+
 
 [Link chat GPT!](https://chatgpt.com/share/677b56b8-8214-8004-b497-74d92085c2ab)
 
